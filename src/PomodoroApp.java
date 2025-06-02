@@ -1,11 +1,11 @@
-import javax.swing.*;
+import javax.swing.*; //import libs
 import javax.swing.border.*;
 import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-class taskdata {
+class taskdata { //class for storing task info
     String name;
     String desc;
     String notes;
@@ -28,14 +28,14 @@ class taskdata {
     }
 }
 
-public class PomodoroApp extends JFrame {
+public class PomodoroApp extends JFrame { //app class
 
-
-    private static final Color color_primary = new Color(40, 167, 69);       // #28a745
-    private static final Color color_secondary = new Color(240, 253, 244);   // #f0fdf4
-    private static final Color color_accent = new Color(99, 230, 190);       // #63e6be
-    private static final Color color_text = new Color(20, 83, 45);           // #14532d
-    private JTextField field_name;
+//colors
+    private static final Color colorprim = new Color(40, 167, 69);       // #28a745
+    private static final Color colorsec = new Color(240, 253, 244);   // #f0fdf4
+    private static final Color accent = new Color(99, 230, 190);       // #63e6be
+    private static final Color text = new Color(20, 83, 45);           // #14532d
+    private JTextField field_name; //button and input elements for gui
     private JTextField field_desc;
     private JTextArea field_notes;
     private JSpinner field_dur;
@@ -54,14 +54,14 @@ public class PomodoroApp extends JFrame {
     private File file = new File("tasks.txt");
     private boolean paused = false;
 
-    public PomodoroApp() {
+    public PomodoroApp() { //constructor
         setup_ui();
         load_file();
         lstner();
         setVisible(true);
     }
 
-    private void setup_ui() {
+    private void setup_ui() { //ui initialization
         setTitle("Greendoro App");
         setSize(600, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -70,12 +70,12 @@ public class PomodoroApp extends JFrame {
         add(createhead(), BorderLayout.NORTH);
         add(createmain(), BorderLayout.CENTER);
         add(createtimer(), BorderLayout.SOUTH);
-        getContentPane().setBackground(color_secondary);
+        getContentPane().setBackground(colorsec);
     }
 
-    private JPanel createhead() {
+    private JPanel createhead() { //top header
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBackground(color_primary);
+        panel.setBackground(colorprim);
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         JLabel label = new JLabel("Pomodoro Timer", SwingConstants.CENTER);
         label.setFont(new Font("Arial", Font.BOLD, 24));
@@ -84,30 +84,30 @@ public class PomodoroApp extends JFrame {
         return panel;
     }
 
-    private JPanel createmain() {
+    private JPanel createmain() { //middle panel
         JPanel panel = new JPanel(new GridLayout(1, 2, 20, 0));
         panel.setBorder(new EmptyBorder(20, 20, 20, 20));
-        panel.setBackground(color_secondary);
+        panel.setBackground(colorsec);
         panel.add(createform());
         panel.add(createtl());
         return panel;
     }
 
-    private JPanel createform() {
+    private JPanel createform() { //new task form
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(color_primary, 2),
+                BorderFactory.createLineBorder(colorprim, 2),
                 "Add New Task",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
                 new Font("Arial", Font.BOLD, 14),
-                color_primary
+                colorprim
         ));
-        panel.setBackground(Color.WHITE);
+        panel.setBackground(Color.WHITE); //task name
         panel.add(createfield("Task Name:", field_name = new JTextField()));
         panel.add(Box.createVerticalStrut(10));
-        panel.add(createfield("Description:", field_desc = new JTextField()));
+        panel.add(createfield("Description:", field_desc = new JTextField())); //desc inputs
         panel.add(Box.createVerticalStrut(10));
         JLabel label_notes = new JLabel("Notes:");
         label_notes.setFont(new Font("Arial", Font.BOLD, 12));
@@ -116,7 +116,7 @@ public class PomodoroApp extends JFrame {
         field_notes.setLineWrap(true);
         field_notes.setWrapStyleWord(true);
         field_notes.setBorder(BorderFactory.createLoweredBevelBorder());
-        JScrollPane scroll = new JScrollPane(field_notes);
+        JScrollPane scroll = new JScrollPane(field_notes); //duration spinner
         panel.add(scroll);
         panel.add(Box.createVerticalStrut(10));
         JLabel label_duration = new JLabel("Duration (minutes):");
@@ -126,12 +126,12 @@ public class PomodoroApp extends JFrame {
         field_dur.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         panel.add(field_dur);
         panel.add(Box.createVerticalStrut(20));
-        btn_add = createbtn("Add Task", color_accent);
+        btn_add = createbtn("Add Task", accent); //add task button
         panel.add(btn_add);
         return panel;
     }
 
-    private JPanel createfield(String text, JTextField field) {
+    private JPanel createfield(String text, JTextField field) { //field gui helper
         JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBackground(Color.WHITE);
         JLabel label = new JLabel(text);
@@ -146,15 +146,15 @@ public class PomodoroApp extends JFrame {
         return panel;
     }
 
-    private JPanel createtl() {
+    private JPanel createtl() { //tasklist panel with controls
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(color_primary, 2),
+                BorderFactory.createLineBorder(colorprim, 2),
                 "Task List",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
                 new Font("Arial", Font.BOLD, 14),
-                color_primary
+                colorprim
         ));
         panel.setBackground(Color.WHITE);
         JLabel label = new JLabel("Select Task:");
@@ -168,15 +168,15 @@ public class PomodoroApp extends JFrame {
         JPanel buttons = new JPanel(new GridLayout(2, 2, 10, 10));
         buttons.setBorder(new EmptyBorder(10, 10, 10, 10));
         buttons.setBackground(Color.WHITE);
-        btn_start = createbtn("Start", color_accent);
+        btn_start = createbtn("Start", accent);
         btn_pause = createbtn("Pause", new Color(255, 193, 7));
-        btn_stop = createbtn("Stop", color_primary);
+        btn_stop = createbtn("Stop", colorprim);
         JButton btn_delete = createbtn("Delete Task", new Color(108, 117, 125));
         buttons.add(btn_start);
         buttons.add(btn_pause);
         buttons.add(btn_stop);
         buttons.add(btn_delete);
-        panel.add(buttons, BorderLayout.SOUTH);
+        panel.add(buttons, BorderLayout.SOUTH); //delete functionality
         btn_delete.addActionListener(e -> {
             int i = box_tasks.getSelectedIndex();
             if (i >= 0) {
@@ -188,31 +188,31 @@ public class PomodoroApp extends JFrame {
         return panel;
     }
 
-    private JPanel createtimer() {
+    private JPanel createtimer() { //timer
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(Color.WHITE);
         panel.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(color_primary, 2),
+                BorderFactory.createLineBorder(colorprim, 2),
                 new EmptyBorder(20, 20, 20, 20)
         ));
         lbl_current = new JLabel("No task selected", SwingConstants.CENTER);
         lbl_current.setFont(new Font("Arial", Font.BOLD, 16));
-        lbl_current.setForeground(color_text);
+        lbl_current.setForeground(text);
         panel.add(lbl_current, BorderLayout.NORTH);
         lbl_timer = new JLabel("00:00", SwingConstants.CENTER);
         lbl_timer.setFont(new Font("Arial", Font.BOLD, 48));
-        lbl_timer.setForeground(color_primary);
+        lbl_timer.setForeground(colorprim);
         panel.add(lbl_timer, BorderLayout.CENTER);
         prog_bar = new JProgressBar(0, 100);
         prog_bar.setStringPainted(true);
         prog_bar.setString("Ready to start");
         prog_bar.setPreferredSize(new Dimension(0, 30));
-        prog_bar.setForeground(color_accent);
+        prog_bar.setForeground(accent);
         panel.add(prog_bar, BorderLayout.SOUTH);
         return panel;
     }
 
-    private JButton createbtn(String text, Color color) {
+    private JButton createbtn(String text, Color color) { //styled button helper
         JButton btn = new JButton(text);
         btn.setBackground(color);
         btn.setForeground(Color.WHITE);
@@ -223,7 +223,7 @@ public class PomodoroApp extends JFrame {
         return btn;
     }
 
-    private void lstner() {
+    private void lstner() { //Attach event listeners
         btn_add.addActionListener(e -> addT());
         btn_start.addActionListener(e -> startT());
         btn_pause.addActionListener(e -> pauseT());
@@ -231,7 +231,7 @@ public class PomodoroApp extends JFrame {
         box_tasks.addActionListener(e -> updatelbl());
     }
 
-    private void addT() {
+    private void addT() { //add task
         String name = field_name.getText().trim();
         String desc = field_desc.getText().trim();
         String notes = field_notes.getText().trim();
@@ -251,7 +251,7 @@ public class PomodoroApp extends JFrame {
         JOptionPane.showMessageDialog(this, "Task added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void startT() {
+    private void startT() { //start timer
         int i = box_tasks.getSelectedIndex();
         if (i < 0) {
             JOptionPane.showMessageDialog(this, "Please select a task!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -279,7 +279,7 @@ public class PomodoroApp extends JFrame {
         timer.start();
     }
 
-    private void pauseT() {
+    private void pauseT() { //pause timer
         if (timer != null) {
             timer.stop();
             paused = true;
@@ -289,12 +289,12 @@ public class PomodoroApp extends JFrame {
         }
     }
 
-    private void stopT() {
+    private void stopT() { //stop task and timer
         if (timer != null) timer.stop();
         resetT();
     }
 
-    private void resetT() {
+    private void resetT() { //reset timer
         paused = false;
         btn_start.setEnabled(true);
         btn_pause.setEnabled(false);
@@ -305,7 +305,7 @@ public class PomodoroApp extends JFrame {
         prog_bar.setString("Ready to start!");
     }
 
-    private void updateT() {
+    private void updateT() { //uodate timer UI
         int min = secondsbank / 60;
         int sec = secondsbank % 60;
         lbl_timer.setText(String.format("%02d:%02d", min, sec));
@@ -314,12 +314,12 @@ public class PomodoroApp extends JFrame {
         prog_bar.setString(p + "% Complete");
     }
 
-    private void updatelbl() {
+    private void updatelbl() { //update label after dropdown
         int i = box_tasks.getSelectedIndex();
         lbl_current.setText(i >= 0 ? "Selected: " + tasks.get(i).name : "No task selected");
     }
 
-    private void finishT() {
+    private void finishT() { //finish task
         resetT();
         closeapp();
         JOptionPane.showMessageDialog(this,
@@ -328,7 +328,7 @@ public class PomodoroApp extends JFrame {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void load_file() {
+    private void load_file() { //load task config from txt
         tasks = new ArrayList<>();
         try (BufferedReader r = new BufferedReader(new FileReader(file))) {
             String line;
@@ -340,7 +340,7 @@ public class PomodoroApp extends JFrame {
         } catch (IOException ignored) {}
     }
 
-    private void save_file() {
+    private void save_file() { //save task configs to txt
         try (BufferedWriter w = new BufferedWriter(new FileWriter(file))) {
             for (taskdata t : tasks) {
                 w.write(t.toString());
@@ -351,7 +351,7 @@ public class PomodoroApp extends JFrame {
         }
     }
 
-    private void closeapp() {
+    private void closeapp() { //close other apps (aggressive)
         try {
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
@@ -364,7 +364,7 @@ public class PomodoroApp extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { //entry pt for test
         SwingUtilities.invokeLater(PomodoroApp::new);
     }
 }
