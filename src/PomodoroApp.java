@@ -31,10 +31,10 @@ class taskdata { //class for storing task info
 public class PomodoroApp extends JFrame { //app class
 
 //colors
-    private static final Color colorprim = new Color(40, 167, 69);       // #28a745
-    private static final Color colorsec = new Color(240, 253, 244);   // #f0fdf4
-    private static final Color accent = new Color(99, 230, 190);       // #63e6be
-    private static final Color text = new Color(20, 83, 45);           // #14532d
+    private static final Color colorprim = new Color(40, 167, 69);
+    private static final Color colorsec = new Color(240, 253, 244);
+    private static final Color accent = new Color(99, 230, 190);
+    private static final Color text = new Color(20, 83, 45);  
     private JTextField field_name; //button and input elements for gui
     private JTextField field_desc;
     private JTextArea field_notes;
