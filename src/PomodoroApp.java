@@ -351,7 +351,7 @@ public class PomodoroApp extends JFrame { //app class
         }
     }
 
-    private void closeapp() { //close other apps (aggressive)
+    private void closeapp() { //close other apps
         try {
             String os = System.getProperty("os.name").toLowerCase();
             if (os.contains("win")) {
